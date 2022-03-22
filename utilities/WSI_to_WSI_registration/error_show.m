@@ -28,20 +28,28 @@ function error_show(ME)
 %          error_show(ME);
 %     end
 
+    % creates temp array of size of the stack
     temp = size(ME.stack);
 
+    % displays the message and error ID, cause
     desc = ['ERROR: ', ME.message];
     disp(desc);
     disp(['ME.identifier: ', ME.identifier]);
     disp(['ME.cause: ', char(ME.cause)]);
 
+    % displays the stack calls of the error
     for iME=1:temp(1)-1
         disp([...
             'Line: ',num2str(ME.stack(iME).line),...
             ', Function: ', ME.stack(iME).name]);
     end
     
+    % function call stack
+    % displays the line numbers and file names of the function calls 
+    % that led to the current pause condition, listed in the order in which they execute
     dbstack()
+
+    % error dialog box
     h_errordlg = errordlg(desc,'Application error','modal');
     uiwait(h_errordlg)
     keyboard
