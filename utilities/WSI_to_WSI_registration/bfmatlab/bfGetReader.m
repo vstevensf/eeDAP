@@ -38,6 +38,8 @@ function r = bfGetReader(varargin)
 
 % Input check
 ip = inputParser;
+
+% adds an optional, positional input argument, argName, into the input parser scheme p
 ip.addOptional('id', '', @ischar);
 ip.addOptional('stitchFiles', false, @isscalar);
 ip.parse(varargin{:});
@@ -71,6 +73,7 @@ if exist('lurawaveLicense', 'var')
 end
 
 % Create a loci.formats.ReaderWrapper object
+% Call Java constructor
 r = javaObject('loci.formats.ChannelSeparator', ...
                javaObject('loci.formats.ChannelFiller'));
 if ip.Results.stitchFiles
@@ -79,6 +82,7 @@ end
 
 % Initialize the metadata store
 OMEXMLService = javaObject('loci.formats.services.OMEXMLServiceImpl');
+% validate the given OME-XML string using Java's XML validation facility
 r.setMetadataStore(OMEXMLService.createOMEXMLMetadata());
 
 % Initialize the reader
