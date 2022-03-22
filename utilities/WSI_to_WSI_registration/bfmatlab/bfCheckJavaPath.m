@@ -51,7 +51,8 @@ ip.parse(varargin{:});
 % Can be in either static or dynamic Java class path
 jPath = javaclasspath('-all');
 bfJarFiles = {'bioformats_package.jar', 'loci_tools.jar'};
-hasBFJar =  false(numel(bfJarFiles), 1);
+% numel = number of array elements
+hasBFJar =  false(numel(bfJarFiles), 1);  % creates array of 0s
 for i = 1: numel(bfJarFiles);
     isBFJar =  @(x) ~isempty(regexp(x, ['.*' bfJarFiles{i} '$'], 'once'));
     hasBFJar(i) = any(cellfun(isBFJar, jPath));
@@ -76,6 +77,7 @@ end
 
 if status
     % Read Bio-Formats version
+    % is_octave() definition in eeDAP/src/bfmatlab/private/is_octave.m
     if is_octave()
         version = char(java_get('loci.formats.FormatTools', 'VERSION'));
     else
@@ -91,8 +93,14 @@ function path = getJarPath(files)
 % Assume the jar is either in the Matlab path or under the same folder as
 % this file
 for i = 1 : numel(files)
-    path = which(files{i});
+    path = which(files{i}); % displays full pathname
     if isempty(path)
+        % mfilename returns a character vector containing the file name of the file in which the function call occurs
+
+        % [filepath,name,ext] = fileparts(filename) returns the path name, file name, and extension for the specified file.
+        % fileparts only parses the specified filename. It does not verify that the file exists.
+        
+        % fullfile builds a full file specification from the specified folder and file names
         path = fullfile(fileparts(mfilename('fullpath')), files{i});
     end
     if ~isempty(path) && exist(path, 'file') == 2
