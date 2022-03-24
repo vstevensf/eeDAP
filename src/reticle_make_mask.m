@@ -1,3 +1,16 @@
+% The microscope reticle is a small piece of glass that has been etched with a grid or a ruler
+% that either fits into your microscope eyepiece as an accessory or that comes integrated into your ocular.
+% https://www.microscope.com/accessories/reticles-micrometers#:~:text=The%20microscope%20reticle%20is%20a,comes%20integrated%20into%20your%20ocular.
+
+% From manual: A reticle is placed in eyepiece at Intermediate Ocular Plane (IOP). 
+% It is used to define the position of the tissue under microscopes.
+
+% Offset (from manual) = There is offset between camera image and microscope eyepiece.
+% User can do registration of the camera image with eyepiece image in this section.
+
+
+% returns the mask itself, a matrix
+
 function mask = reticle_make_mask(reticleID, pixel_size, offset)
 try
     

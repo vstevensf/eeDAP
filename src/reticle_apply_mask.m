@@ -1,14 +1,22 @@
+% A mask (photomask) is a glass plate with a pattern etched into it. 
+% A reticle is a mask where the data for a fraction of the exposed area is present.
+
 function img = reticle_apply_mask(img, mask)
 try
     % To be used with RGB images, 8 bits per channel
     
+    % save image dimensions
     temp = size(img);
     img_w = temp(2);
     img_h = temp(1);
+
+    % save mask dimensions
     temp = size(mask);
     mask_w = temp(2);
     mask_h = temp(1);
     
+    % if mask dimensions exceed image dimensions
+    % redefine mask dimensions to smaller area within image
     bot_h_mask = 1;
     top_h_mask = mask_h;
     bot_w_mask = 1;
@@ -21,6 +29,9 @@ try
         bot_w_mask = floor(mask_w/2 - img_w/2 + 1);
         top_w_mask = floor(mask_w/2 + img_w/2);
     end
+
+    % if image dimensions exceed mask dimensions
+    % redefine image dimensions to smaller area
     bot_h_img = 1;
     top_h_img = img_h;
     bot_w_img = 1;
