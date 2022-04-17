@@ -1,9 +1,22 @@
+% called in src/Administrator_Input_Screen.m, src/GUI.m, src/Stage_Allighment.m
 function hFig = camera_preview(vid, settings)
+%--------------------------------------------------------------------------
+% Preview the view of the camera and display to the user
+%--------------------------------------------------------------------------
 try
     
     % Get properties of the camera image
+    % get(req,PropertyName) returns value of a specific property. 
+    % Use a cell array of property names to return a cell array with multiple property values.
+
+    % vid is struct with information about the camera + video display of microscope view
+
+    % number of color bands
     nBands = get(vid, 'NumberOfBands');
-    vidRes = get(vid, 'VideoResolution');
+    % equivalent to width and height of video resolution
+    vidRes = get(vid, 'VideoResolution'); 
+
+    % image width and height
     imWidth = vidRes(1);
     imHeight = vidRes(2);
 
@@ -15,8 +28,11 @@ try
         'Name','Preview with cross hairs',...
         'Units','pixels',...
         'Position',[0,0,imWidth,imHeight]);
+
     % Create an image in the figure and get the handle
     hImage = image( uint8(zeros(imHeight, imWidth, nBands) ));
+
+    % gca = current axes --> set to 0
     set(gca, 'Units', 'pixels', 'Position', [0, 0, imWidth, imHeight]);
 
     % Attach the settings structure to the image
@@ -25,6 +41,8 @@ try
     % Set up the update preview window function.
     setappdata(hImage,'UpdatePreviewWindowFcn',@preview_with_cross);
     
+    % preview(obj,himage) displays live video data for video input object obj in the image object specified by the handle himage. 
+    % preview scales the image data to fill the entire area of the image object but does not modify the values of any image object properties.
     preview(vid, hImage);
     
 catch ME
