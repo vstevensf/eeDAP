@@ -3,8 +3,11 @@
 % also called within src/GUI.m, src/Stage_Allighment.m,...
 % utilities/Camera_stage_review/Camera_stage_review.m, utilities/Camera_stage_review/camera_open.m
 function cam=camera_open(cam_kind,cam_format,defaultR,defaultB)
+%--------------------------------------------------------------------------
 % returns a structure populated with info based on the camera type
 % this is saved in the MyData structure described in Administrator_Input_Screen.m and GUI.m
+% also creates video object in GUI which is a live view of microscope view on computer screen
+%--------------------------------------------------------------------------
 try
 
     % the following are from Matlab's image acquisition toolbox
