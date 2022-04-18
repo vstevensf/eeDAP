@@ -24,7 +24,7 @@
 % https://www.mathworks.com/help/instrument/communicate-between-a-tcpip-client-and-server-in-matlab.html
 
 
-
+clear;
 % find hostname and address
 [~,hostname] = system('hostname');
 hostname = string(strtrim(hostname));
@@ -42,9 +42,18 @@ disp(address);
 % callback function = connectionFcn -- writes data when a TCP/IP client
 % connects to the server
 % clear server;
-clear;
+
 server = tcpserver(address,4000,"ConnectionChangedFcn",@connectionFcn);
-disp(server)
+
+
+% callback function that reads data each time the specified bytes of data
+% are available; store read data in the UserData property of tcpserver
+% object
+% in this case, triggers each time 7688 bytes of data are received
+configureCallback(server,"byte",7688,@readDataFcn);
+
+disp(server);
+
 % connection callback function to write binary data
 function connectionFcn(src, ~)
     if src.Connected
@@ -59,6 +68,7 @@ end
 function readDataFcn(src, ~)
     disp("Data was received from the client.")
     src.UserData = read(src,src.BytesAvailableFcnCount/8,"double");
+    disp(src.UserData);
     reshapedServerData = reshape(src.UserData,31,31);
     surf(reshapedServerData);
 end
